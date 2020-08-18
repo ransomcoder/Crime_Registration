@@ -1,0 +1,244 @@
+{% load static %}
+{% static "images" as baseUrl%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/newstyle.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}">
+    <link href="{% static 'plugins/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/animate.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/main_styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/responsive.css' %}">
+</head>
+<body>
+<form action="{% url 'new' %}" method="POST">
+    {% csrf_token %}
+    <div class="chatbox">
+
+        <div id="chatlogid" class="chatlogs">
+
+            <div id="demo1" class="chat friend"> 
+                <div class="user-photo"><img src="{% static 'images/client.png' %}"></div> 
+                <p class="chat-message">
+                    Hi! This is AI based Crime Registration Bot.
+                    Select any one of the below.
+                    Take care while giving details.
+                </p> 
+            </div>
+            <button id='1' type="button" onclick="logfun('Murder')" class="home_search_button">Murder</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button id='2' type="button" onclick="logfun('Theft')" class="home_search_button">Theft</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button id='3' type="button" onclick="logfun('Cyber Crime')" class="home_search_button">Cyber Crime</button>&nbsp;&nbsp;<br><br>
+            <button id='4' type="button" onclick="logfun('Burglary')" class="home_search_button">Burglary</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button id='5' type="button" onclick="logfun('Assualt')" class="home_search_button">Assualt</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button id='6' type="button" onclick="logfun('Arson')" class="home_search_button">Arson</button>&nbsp;&nbsp;<br><br>
+            <button id='7' type="button" onclick="logfun('Substance Abuse')" class="home_search_button">Substance Abuse</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button id='8' type="button" onclick="logfun('Terrorism')" class="home_search_button">Terrorism</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button id='9' type="button" onclick="logfun('Trafficking')" class="home_search_button">Trafficking</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+        </div>
+
+        <div class="chat-form">
+            <textarea id="area" name="ta"></textarea>
+            <button type="button" onclick="Friend()">Send</button>
+        </div>
+    </div>
+
+    <input id="PassToDB" value="ok" name="pname" hidden>
+    <div>
+        <p align="center"><input id="sub" disabled="true" class="home_search_button" type='submit'></p>
+    </div>
+
+<script>
+        var z = 1;
+        var y = 0;
+        var l = 0;
+        var quescount = 0;
+        var fir = [];
+
+        function Friend() {
+
+        var x = document.getElementById('area').value;
+        document.getElementById('area').value = "";
+
+        if(x==""){ return; }
+        else {
+
+        appendfromself(x);
+
+        if(z==2) {
+
+        fir.push(x+'~');
+        appendfromfriend('Enter your name (Referencial purpose)'); 
+        
+        return;
+
+        }      
+
+        if(z==(4+y)) {
+            fir.push(x+'~');
+            appendfromfriend('Enter phone number');
+            return;
+        }
+
+        if(z==(6+y)) {
+            if(x.match(/^[6-9][0-9]{9}$/)){ 
+            
+            fir.push(x+'~');
+            appendfromfriend('Enter email id');
+            return; }
+            else { 
+            didnt('Enter phone number'); 
+            }
+        }
+
+        if(z==(8+y)) {
+            if(x.match(/\w[a-zA-Z0-9.$_]+@[0-9a-zA-Z]+[.][a-z]+/)) {
+        fir.push(x+'~');
+        appendfromfriend('Address (Referencial purpose)');
+        return; }
+        else { didnt('Enter email id'); }
+        }
+
+        if(z==(10+y)) {
+            fir.push(x+'~');
+            appendfromfriend('Date of crime (dd/mm/yyyy)');
+            return;
+        }
+
+        if(z==(12+y)) {
+            if(x.match(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/)) {
+                var today = new Date();
+                var d1 = today.getDate();
+                var m1 = today.getMonth()+1; 
+                var y1 = today.getFullYear();
+                l = x.split("/")
+                if(l[2]>y1) {didnt("Date of crime (dd/mm/yyyy)");return;}
+                else if(l[2]==y1) {
+                    if(l[1]>m1) {didnt("Date of crime (dd/mm/yyyy)");return;}
+                    else if(l[1]==m1) {
+                        if(l[0]>d1) {didnt("Date of crime (dd/mm/yyyy)");return;}
+                    }
+                }
+                
+            fir.push(x+'~');
+            appendfromfriend('Time of crime (hh:mm:ss)');
+            return; }
+            else { didnt("Date of crime (dd/mm/yyyy)"); }
+        }
+
+        if(z==(14+y)) {
+            if(x.match(/^(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)$/)) {
+                var today = new Date();
+                var d1 = today.getDate();
+                var m1 = today.getMonth()+1; 
+                var y1 = today.getFullYear();
+                var h1 = today.getHours();
+                var m = today.getMinutes();
+                t = x.split(":");
+                if(l[2]==y1 && l[1]==m1 && l[0]==d1){ 
+                    if(t[0]>h1) {didnt("Time of crime (hh:mm:ss)"); return;}
+                    else if(t[0]==h1) {
+                        if(t[1]>m) {didnt("Time of crime (hh:mm:ss)"); return;}
+                    }
+                }
+
+            fir.push(x+'~');
+            appendfromfriend('Place of offence');
+            return; 
+            }
+            else { didnt("Time of crime (hh:mm:ss)"); }
+        }
+
+        if(z==(16+y)) {
+            fir.push(x+'~');
+            appendfromfriend('Describe the events of crime in a linear time line');
+            return;
+        }
+
+        if(z==(18+y)) {
+            fir.push(x+'~');
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; 
+            var yyyy = today.getFullYear();
+            var hour = today.getHours();
+            var min = today.getMinutes();
+            var sec = today.getSeconds();
+            if(dd<10) {dd='0'+dd;} 
+            if(mm<10) {mm='0'+mm;} 
+            if(hour<10) {hour='0'+hour;}
+            if(min<10) {min='0'+min;}
+            if(sec<10) {sec='0'+sec;}
+            today = mm+'-'+dd+'-'+yyyy;
+            now = hour+':'+min+':'+sec;
+            fir.push(today+'~');
+            fir.push(now);
+
+            appendfromfriend('Press submit to save the details');
+            document.getElementById('sub').disabled = false;
+            document.getElementById("PassToDB").value = fir;
+            return;
+        }
+        
+        }
+        }
+
+        function logfun(i) {
+        document.getElementById('1').style = 'visibility:hidden';
+        document.getElementById('2').style = 'visibility:hidden';
+        document.getElementById('3').style = 'visibility:hidden';
+        document.getElementById('4').style = 'visibility:hidden';
+        document.getElementById('5').style = 'visibility:hidden';
+        document.getElementById('6').style = 'visibility:hidden';
+        document.getElementById('7').style = 'visibility:hidden';
+        document.getElementById('8').style = 'visibility:hidden';
+        document.getElementById('9').style = 'visibility:hidden';
+        document.getElementById('area').innerHTML = i;
+        }
+
+        
+        function didnt(i) {
+            y = y + 2;
+            z = z + 1;
+            id = 'demo' + z.toString();
+      var y1 = "<div id="+ id +" class=\"chat friend\"> \
+                    <div class=\"user-photo\"><img src=\"{% static 'images/client.png' %}\"></div> \
+                    <p class=\"chat-message\">I dont understand that! "+i+"</p> \
+                </div>";
+        document.getElementById("demo"+(z-1)).insertAdjacentHTML('afterend', y1);
+        }
+
+        function appendfromself(x) {
+        z = z + 1;
+        id = 'demo' + z.toString();
+      var y1 = "<div id="+ id +" class=\"chat self\"> \
+                    <div class=\"user-photo\"><img src=\"{% static 'images/demo.png' %}\"></div> \
+                    <p class=\"chat-message\">"+x+"</p> \
+                </div>"; 
+        document.getElementById("demo"+(z-1)).insertAdjacentHTML('afterend', y1);
+        document.getElementById("area").innerHTML = "";
+        }
+
+        function appendfromfriend(ques) {
+            z = z + 1;
+            id = 'demo' + z.toString();
+          var y1 = "<div id="+ id +" class=\"chat friend\"> \
+                        <div class=\"user-photo\"><img src=\"{% static 'images/client.png' %}\"></div> \
+                        <p class=\"chat-message\">"+ques+"</p> \
+                    </div>"; 
+            document.getElementById("demo"+(z-1)).insertAdjacentHTML('afterend', y1);
+    
+        }
+
+</script>
+</form>
+</body>
+</html>
